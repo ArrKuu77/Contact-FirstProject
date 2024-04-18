@@ -10,12 +10,13 @@ const endAuthPointApiService = apiService.injectEndpoints({
       providesTags: ["contact"],
     }),
     getContacts: builder.query({
-      query: () => ({
-        url: "contact",
+      query: (number) => ({
+        url: `contact?page=${number}`,
         method: "GET",
       }),
       providesTags: ["contact"],
     }),
+
     createContact: builder.mutation({
       query: (formData) => ({
         url: "contact",

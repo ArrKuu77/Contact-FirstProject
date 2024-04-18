@@ -11,9 +11,11 @@ import {
 } from "../../../store/service/endPoints/contact.point";
 // import { useNavigate } from "react-router-dom";
 
-const FormTool = ({ editData, handleClose }) => {
+const FormTool = ({ editData, handleClose, setPage, totalPage }) => {
   console.log(editData);
   const [fun, data] = useCreateContactMutation();
+  console.log(data);
+
   const [updateFun, updateData] = useUpdateContactMutation();
   // const nav = useNavigate();
   const CloseRef = useRef();
@@ -42,6 +44,7 @@ const FormTool = ({ editData, handleClose }) => {
       await updateFun({ id: editData?.data?.id, value: values });
     } else {
       await fun(values);
+      setPage(totalPage);
       // nav("/home");
       // console.log(CloseRef.current.click());
     }

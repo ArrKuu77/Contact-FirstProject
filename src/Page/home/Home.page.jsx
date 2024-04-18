@@ -22,12 +22,15 @@ import { Input } from "../../components/ui/input";
 import { FiPlusCircle } from "react-icons/fi";
 import { Outlet } from "react-router-dom";
 import FormTool from "./tool/Form.tool";
-import { ContactTablePage } from "..";
+import { ContactTablePage, PaginationTool } from "..";
 import { useGetContactsQuery } from "../../store/service/endPoints/contact.point";
 
 const HomePage = () => {
-  const data = useGetContactsQuery();
-  // console.log(data);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const data = useGetContactsQuery(page);
+
+  console.log(data);
   const [editData, setEditData] = useState({
     edit: false,
     data: null,
@@ -46,6 +49,7 @@ const HomePage = () => {
     localStorage.getItem("token") ? localStorage.getItem("token") : null
   );
 
+  let totalPage = data?.data?.contacts?.last_page;
   // console.log(chacker);
   return (
     <AuthGuardComponents check={chacker} goPage={"/home"}>
@@ -63,6 +67,13 @@ const HomePage = () => {
               </SheetTrigger>
             </div>
             <ContactTablePage data={data} handelEdit={handelEdit} />
+            <PaginationTool
+              totalPage={totalPage}
+              page={page}
+              limit={limit}
+              siblings={1}
+              setPage={setPage}
+            />
           </div>
 
           <SheetContent
@@ -74,7 +85,12 @@ const HomePage = () => {
                 Contact Information
               </SheetTitle>
             </SheetHeader>
-            <FormTool editData={editData} handleClose={handleClose} />
+            <FormTool
+              editData={editData}
+              handleClose={handleClose}
+              setPage={setPage}
+              totalPage={totalPage}
+            />
             <SheetFooter></SheetFooter>
           </SheetContent>
         </div>

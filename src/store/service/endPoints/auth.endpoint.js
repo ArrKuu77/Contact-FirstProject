@@ -16,6 +16,13 @@ const endAuthPointApiService = apiService.injectEndpoints({
         body: formData,
       }),
     }),
+    changePassword: builder.mutation({
+      query: (formData) => ({
+        url: "change-password",
+        method: "POST",
+        body: formData,
+      }),
+    }),
     logOut: builder.mutation({
       query: () => ({
         url: "user-logout",
@@ -25,5 +32,9 @@ const endAuthPointApiService = apiService.injectEndpoints({
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation, useLogOutMutation } =
-  endAuthPointApiService;
+export const {
+  useChangePasswordMutation,
+  useSignInMutation,
+  useSignUpMutation,
+  useLogOutMutation,
+} = endAuthPointApiService;

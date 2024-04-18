@@ -14,8 +14,8 @@ import Swal from "sweetalert2";
 import { EmptyLottie, LoadingLottie } from "../../../components";
 import { SheetTrigger } from "../../../components/ui/sheet";
 const ContactTableTool = ({ data, handelEdit }) => {
-  const { data: getData, isLoading, isError } = data;
-  // console.log(getData);
+  const { data: getData, isLoading, isError, isFetching } = data;
+  console.log(getData);
 
   const [deleteFun, currentDeleteData] = useDeleteContactMutation();
   const {
@@ -50,8 +50,8 @@ const ContactTableTool = ({ data, handelEdit }) => {
     });
   };
   return (
-    <div className=" my-5 border  border-orangeColor !text-white !w-max-content sm:w-[90%] mx-[auto]">
-      {isLoading ? (
+    <div className=" my-5 border  border-orangeColor !text-white  w-[90%] mx-[auto]">
+      {isFetching ? (
         <LoadingLottie />
       ) : getData?.contacts?.data.length > 0 ? (
         <div className=" flex    mx-auto my-3  justify-center items-center flex-wrap w-[98%] gap-7 ">
@@ -98,7 +98,7 @@ const ContactTableTool = ({ data, handelEdit }) => {
           </Table>
         </div>
       ) : (
-        data?.contacts?.data.length == 0 && (
+        getData?.contacts?.data.length == 0 && (
           <div className=" mx-auto flex justify-center items-center h-[400px] border-[#151515] border w-4/5   ">
             <EmptyLottie />
           </div>

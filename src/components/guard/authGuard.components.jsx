@@ -9,7 +9,7 @@ const authGuardComponents = ({ goPage, check, children }) => {
   // console.log(data, isError, isLoading);
 
   useEffect(() => {
-    if (check) {
+    if (check || !check == undefined) {
       nav(goPage);
     } else {
       nav("/");

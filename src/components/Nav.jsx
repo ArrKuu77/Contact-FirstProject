@@ -6,7 +6,12 @@ import { LoadingLottie } from ".";
 import { useGetProfileQuery } from "../store/service/endPoints/contact.point";
 import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { ImProfile } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
+
+import { RiLogoutBoxRFill } from "react-icons/ri";
 const Nav = ({ setChacker }) => {
+  const nav = useNavigate();
   const [fun, { isLoading, isError, isSuccess }] = useLogOutMutation();
   const handleLogout = async () => {
     await fun();
@@ -25,17 +30,16 @@ const Nav = ({ setChacker }) => {
   return (
     <div className=" bg-[#151515] px-3    py-5  border-b shadow-lg">
       <div className="flex justify-between mx-auto w-11/12 items-center">
-        <div className=" sm:flex-row flex flex-col justify-center items-center text-xl font-bold ">
+        <div
+          onClick={() => nav("/home")}
+          className=" sm:flex-row flex flex-col justify-center items-center text-xl font-bold hover:cursor-pointer select-none"
+        >
           <span className=" p-1">MMSIT</span>{" "}
           <span className=" text-black bg-orangeColor p-1 rounded-sm">
             Contact App
           </span>
         </div>
         <div className=" flex justify-center items-center gap-5">
-          <Button className=" bg-black" onClick={handleLogout}>
-            <span className="text-orangeColor">Log</span>
-            <span>out</span>
-          </Button>
           {ProfileLoading ? (
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
@@ -50,17 +54,26 @@ const Nav = ({ setChacker }) => {
                 {ProfileData?.user?.name[0].toUpperCase()}
               </p>
               {tokenProfile && (
-                <div className=" absolute top-[55px] right-0 bg-[#151515] p-2 border-2 border-orangeColor ">
-                  <h1 className=" flex justify-center gap-3 items-center  text-center text-xl font-semibold  ">
-                    <FaUser />
-                    {ProfileData?.user?.name}
+                <div className=" z-10 absolute top-[55px] right-0 bg-[#151515] p-2 border-2 border-orangeColor ">
+                  <Button
+                    onClick={() => nav("/user-profile")}
+                    className=" bg-black p-3 rounded-lg my-2  flex justify-center items-center gap-3   text-center text-xl font-semibold  "
+                  >
+                    <ImProfile className=" !w-6 !h-6" />
+                    <div className=" flex justify-center items-center gap-1">
+                      <span>Your</span>
+                      <span>Profile</span>
+                    </div>
                     {/* {ProfileData?.user?.created_at} */}
-                  </h1>
-
-                  <h1 className=" flex  items-center gap-3">
-                    <MdEmail />
-                    {ProfileData?.user?.email}
-                  </h1>
+                  </Button>
+                  <Button
+                    onClick={handleLogout}
+                    className=" bg-black p-3 rounded-lg my-2  flex justify-center items-center gap-3   text-center text-xl font-semibold    "
+                  >
+                    <RiLogoutBoxRFill />
+                    <span className="text-orangeColor">Log</span>
+                    <span>out</span>
+                  </Button>
                 </div>
               )}
             </div>

@@ -13,11 +13,11 @@ import {
 
 const App = () => {
   return (
-    <div className=" bg-black  sm:w-screen sm:h-full h-screen   text-white">
+    <div className=" bg-black  w-screen sm:h-full maxContent    text-white">
       <Routes>
         <Route path="/" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        {/* <Route path="/user-profile" element={<UserProfilePage />} /> */}
+        <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/home" element={<HomePage />}>
           {/* <Route index element={<ContactsPage />} /> */}
           <Route path="contactCreate" element={<ContactCreatePage />} />

@@ -16,8 +16,11 @@ import { Link } from "react-router-dom";
 // import { useToast} from "../components/ui/use-toast"
 import { useNavigate } from "react-router-dom";
 import { useSignInMutation } from "../../store/service/endPoints/auth.endpoint";
+import { useToast } from "../../components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 const SignInPage = () => {
+  const { toast } = useToast();
   const [signIn, data] = useSignInMutation();
   const nav = useNavigate();
 
@@ -26,7 +29,7 @@ const SignInPage = () => {
   console.log(data);
   useEffect(() => {
     if (data.isError) {
-      console.log(data.error.data.message);
+      console.log(data?.error?.data?.message);
     } else if (data.isSuccess) {
       nav("/home");
     }
@@ -49,16 +52,25 @@ const SignInPage = () => {
   });
   const HandleSubmit = async (value) => {
     const res = await signIn(value);
-    console.log(JSON.stringify(res.data.token));
-    localStorage.setItem("token", JSON.stringify(res.data.token));
+    if (res.data.token !== undefined) {
+      console.log(JSON.stringify(res?.data?.token));
+      localStorage.setItem("token", JSON.stringify(res?.data?.token));
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error Message!",
+        description: res.data.message,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    }
     // nav("/home");
   };
 
   return (
     <AuthGuardComponents check={localStorage.getItem("token")} goPage={"/home"}>
-      <div className=" w-3/4 mx-auto h-full flex justify-center items-center ">
-        <Card className="basis-1/2 bg-bgc text-white ">
-          <CardHeader className="flex justify-between flex-row items-center">
+      <div className=" w-11/12 sm:w-2/4  mx-auto h-screen flex flex-col justify-center ">
+        <Card className="basis-1/2 bg-bgc text-white flex flex-col justify-center items-center">
+          <CardHeader className="flex justify-between flex-row items-center w-full">
             <CardTitle className="text-white bg-black p-4 relative rounded-xl">
               <div className=" absolute top-[-40%] right-0 bg-black h-9 p-1 w-full"></div>
               <span className="text-2xl">SignIn</span>
@@ -67,7 +79,7 @@ const SignInPage = () => {
               <Link to={"/sign-up"}> I don't have an account!</Link>
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="w-full">
             <Formik
               validationSchema={validationSchema}
               onSubmit={HandleSubmit}
